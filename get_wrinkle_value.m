@@ -1,7 +1,8 @@
-function [value, success] = get_wrinkle_value(file)
+function [Image, value, success] = get_wrinkle_value(file)
 value = 0;
 success = true;
 I = imread(file);
+Image = I;
 
 if size(I,3)==3
     I = rgb2gray(I);
@@ -200,7 +201,6 @@ v(6) = right_temple_count(2)/(right_temple_count(1)+right_temple_count(2));
 
 
 value = sum(v);
-value
 %------------------------
 %figure,
 %imshow(I);   

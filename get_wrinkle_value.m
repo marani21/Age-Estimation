@@ -179,7 +179,7 @@ BEyes = [le_endx+betweenl/5 Forehead(2)+Forehead(4) (3/5)*betweenl 0.4*d];
 %I = insertShape(I,'rectangle',RightTemple, 'Color', 'red');
 
 %--------------------------------------------
-I = edge(I,'Canny',[0 0.1]);
+I = edge(I,'Canny',[0 0.02]);
 
 
 

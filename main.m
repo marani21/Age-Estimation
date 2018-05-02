@@ -1,5 +1,5 @@
 %Number of clusters
-n = 10;
+n = 12;
 [age_list,~]=datevec(datenum(wiki.photo_taken,7,1)-wiki.dob);
 %Training set
 %[values, ages] = get_training_values();
@@ -7,7 +7,7 @@ n = 10;
 results = [];
 
 
-for j = 0:99
+for j = 0:0
     if(j<10)
        dir_name = strcat('0', num2str(j));
     else
@@ -20,7 +20,6 @@ for j = 0:99
         if(length(test_files(i).name) > 3)
             sprintf('test/%s/%s', dir_name, test_files(i).name)
             [image, value, success] = get_wrinkle_value(sprintf('test/%s/%s', dir_name, test_files(i).name));
-
             if(success == 1)
                 success
                 values_sum = [values value];
@@ -33,7 +32,8 @@ for j = 0:99
                 test_Pij = U(:, length(U));
 
                 %Get clusters which training data belong to
-                [maxm, maxind] = max(U(:, 1:146));
+                pre_last_index = length(U) - 1;
+                [maxm, maxind] = max(U(:, 1:pre_last_index));
                 maxm_v = maxm';
 
                 averages = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -49,13 +49,15 @@ for j = 0:99
                     suma = suma + (test_Pij(k)*averages(k));
                 end
                 index = find(strcmp(wiki.full_path, sprintf('%s/%s',dir_name, test_files(i).name))==1);
+                age = 0;
                 age = age_list(index);
                 %value
                 %suma
                 suma = round(suma);
                 error = abs(age - suma);
-                error
-                results = [results; [suma age value error]];
+                name = sprintf('%s_%s', dir_name, test_files(i).name);
+                c = {suma, age, value, error, name};
+                results = [results; c];
             end
         end
     end

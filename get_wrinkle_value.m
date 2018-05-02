@@ -16,6 +16,11 @@ s = size(Face);
 if(s(1) ~= 1) 
     success = false;
     nr = 16;
+    Face
+    nr
+    I = insertShape(I,'rectangle',Face, 'Color', 'red');
+    imwrite(I,'test/pawel.jpg');
+    Image = I;
     return;
 end
 
@@ -42,6 +47,7 @@ s = size(Eyes);
 if(s(1) ~= 1) 
     success = false;
     nr = 41;
+    nr
     return;
 end
 EyesT = Eyes;
@@ -65,7 +71,8 @@ LeftEye=step(LeftEyeDetect,I, lroi);
 s = size(LeftEye);
 if(s(1) ~= 1) 
     success = false;
-    nr = 41;
+    nr = 68;
+    nr
     return;
 end
 
@@ -77,7 +84,8 @@ RightEye=step(RightEyeDetect,I, rroi);
 s = size(RightEye);
 if(s(1) ~= 1) 
     success = false;
-    nr = 41;
+    nr = 80;
+    nr
     return;
 end
 %----------------------------------------------%
@@ -91,7 +99,8 @@ Nose=step(NoseDetect,I);
 s = size(Nose);
 if(s(1) ~= 1) 
     success = false;
-    nr = 68;
+    nr = 98;
+    nr
     return;
 end
 %Nose=Nose(1,:);
@@ -119,10 +128,18 @@ ch_x1 = LeftEye(1);
 ch_x2 = Nose(1) + Nose(3);
 ch_y1 = LeftEye(2) + LeftEye(4);
 ch_y2 = RightEye(2) + RightEye(4);
-ch_w1 = Nose(1) - Eyes(1);
+ch_w1 = (Nose(1) - Eyes(1)) * 0.8;
 ch_w2 = (RightEye(1) + RightEye(3)) - ch_x2;
-ch_h1 = nc(2) - ch_y1;
+ch_h1 = (nc(2) - ch_y1)*0.8;
 ch_h2 = nc(2) - ch_y1;
+
+%poprawki
+sr_w = 0.2 * ch_w2;
+ch_w2 = ch_w2 * 0.8;
+ch_h2 = ch_h2 * 0.8;
+
+ch_x2 = ch_x2 + sr_w;
+
 
 LeftChick = [ch_x1 ch_y1 ch_w1 ch_h1];
 RightChick = [ch_x2 ch_y2 ch_w2 ch_h2];
@@ -180,7 +197,9 @@ BEyes = [le_endx+betweenl/5 Forehead(2)+Forehead(4) (3/5)*betweenl 0.4*d];
 %I = insertShape(I,'rectangle',RightTemple, 'Color', 'red');
 
 %--------------------------------------------
-I = edge(I,'Canny',[0 0.02]);
+%correction = gammacorrection(I, 1);
+%I = imadjust(I,[],[], correction);
+I = edge(I,'Canny',[0 0.06]);
 
 
 

@@ -119,10 +119,16 @@ ch_x1 = LeftEye(1);
 ch_x2 = Nose(1) + Nose(3);
 ch_y1 = LeftEye(2) + LeftEye(4);
 ch_y2 = RightEye(2) + RightEye(4);
-ch_w1 = Nose(1) - Eyes(1);
+ch_w1 = (Nose(1) - Eyes(1))*0.8;
 ch_w2 = (RightEye(1) + RightEye(3)) - ch_x2;
-ch_h1 = nc(2) - ch_y1;
+ch_h1 = (nc(2) - ch_y1)*0.8;
 ch_h2 = nc(2) - ch_y1;
+
+sr_w = 0.2 * ch_w2;
+ch_w2 = ch_w2 * 0.8;
+ch_h2 = ch_h2 * 0.8;
+
+ch_x2 = ch_x2 + sr_w;
 
 LeftChick = [ch_x1 ch_y1 ch_w1 ch_h1];
 RightChick = [ch_x2 ch_y2 ch_w2 ch_h2];
@@ -225,5 +231,7 @@ I = insertShape(I,'rectangle',RightTemple, 'Color', 'red');
 % 
 % rectangle('Position',BEyes,'EdgeColor','r');
 fprintf('END');
+correction = gammacorrection(I, 1);
+I = imadjust(I,[],[], correction);
 Image = I;
 end

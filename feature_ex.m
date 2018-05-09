@@ -231,7 +231,7 @@ I = insertShape(I,'rectangle',RightTemple, 'Color', 'red');
 % 
 % rectangle('Position',BEyes,'EdgeColor','r');
 fprintf('END');
-correction = gammacorrection(I, 1);
-I = imadjust(I,[],[], correction);
+%correction = gammacorrection(I, 1);
+%I = imadjust(I,[],[], correction);
 Image = I;
 end

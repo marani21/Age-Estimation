@@ -31,7 +31,8 @@ if Err == 0
 x = Image;
 x = double(x);
 average_br = mean2(x)/255;
+%average_br
 gamma = -0.3/(log(average_br));
-gamma
+%gamma
 end;
 end

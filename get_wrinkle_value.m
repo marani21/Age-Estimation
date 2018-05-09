@@ -16,11 +16,6 @@ s = size(Face);
 if(s(1) ~= 1) 
     success = false;
     nr = 16;
-    Face
-    nr
-    I = insertShape(I,'rectangle',Face, 'Color', 'red');
-    imwrite(I,'test/pawel.jpg');
-    Image = I;
     return;
 end
 
@@ -47,7 +42,6 @@ s = size(Eyes);
 if(s(1) ~= 1) 
     success = false;
     nr = 41;
-    nr
     return;
 end
 EyesT = Eyes;
@@ -72,7 +66,6 @@ s = size(LeftEye);
 if(s(1) ~= 1) 
     success = false;
     nr = 68;
-    nr
     return;
 end
 
@@ -85,7 +78,6 @@ s = size(RightEye);
 if(s(1) ~= 1) 
     success = false;
     nr = 80;
-    nr
     return;
 end
 %----------------------------------------------%
@@ -100,7 +92,6 @@ s = size(Nose);
 if(s(1) ~= 1) 
     success = false;
     nr = 98;
-    nr
     return;
 end
 %Nose=Nose(1,:);
@@ -197,9 +188,9 @@ BEyes = [le_endx+betweenl/5 Forehead(2)+Forehead(4) (3/5)*betweenl 0.4*d];
 %I = insertShape(I,'rectangle',RightTemple, 'Color', 'red');
 
 %--------------------------------------------
-%correction = gammacorrection(I, 1);
-%I = imadjust(I,[],[], correction);
-I = edge(I,'Canny',[0 0.06]);
+correction = gammacorrection(I, 1);
+I = imadjust(I,[],[], correction);
+I = edge(I,'Canny',[0 0.09]);
 
 
 

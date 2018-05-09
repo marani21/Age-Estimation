@@ -1,13 +1,13 @@
 %Number of clusters
-n = 12;
+n = 20;
 [age_list,~]=datevec(datenum(wiki.photo_taken,7,1)-wiki.dob);
 %Training set
-%[values, ages] = get_training_values();
+[values, ages, file_names] = get_training_values();
 
 results = [];
 
 
-for j = 0:0
+for j = 0:99
     if(j<10)
        dir_name = strcat('0', num2str(j));
     else
@@ -49,7 +49,6 @@ for j = 0:0
                     suma = suma + (test_Pij(k)*averages(k));
                 end
                 index = find(strcmp(wiki.full_path, sprintf('%s/%s',dir_name, test_files(i).name))==1);
-                age = 0;
                 age = age_list(index);
                 %value
                 %suma

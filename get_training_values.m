@@ -1,8 +1,9 @@
-function [values, ages] = get_training_values()
+function [values, ages, file_names] = get_training_values()
     load('wiki');
     [age_list,~]=datevec(datenum(wiki.photo_taken,7,1)-wiki.dob);
     values = [];
     ages = [];
+    file_names = [];
     for j = 0:99
 
         if(j<10)
@@ -20,8 +21,8 @@ function [values, ages] = get_training_values()
                 %sprintf('training-safe/%s/%s',dir_name, files(i).name)
                 %[I, success, nr, value] = feature_ex(sprintf('training-safe/%s/%s',dir_name, files(i).name));
 
-                [I, value, success] = get_wrinkle_value(sprintf('training-safe/%s/%s',dir_name, files(i).name));
-                images{i} = I;
+                [Ic, value, success] = get_wrinkle_value(sprintf('training-safe/%s/%s',dir_name, files(i).name));
+                %images{i} = I;
                 if(success)
                     fprintf('SUCCESS');
                     index = find(strcmp(wiki.full_path, sprintf('%s/%s',dir_name, files(i).name))==1);
@@ -30,10 +31,11 @@ function [values, ages] = get_training_values()
                     age_list(index)
                     values = [values value];
                     ages = [ages age];
-                    %name =  sprintf('%s/%s',dir_name, files(i).name);
-                    %file_names = [file_names; name];
-                    %imwrite(images{i},sprintf('tmp/%s_%s.jpg',dir_name, files(i).name));
-                    %imwrite(images{i},sprintf('tmp/canny/%s_%s.jpg',dir_name, files(i).name));
+                    name =  sprintf('%s/%s',dir_name, files(i).name);
+                    c = {name};
+                    file_names = [file_names; c];
+                    %imwrite(I,sprintf('tmp/%s_%s.jpg',dir_name, files(i).name));
+                    imwrite(Ic,sprintf('tmp/canny/%s_%s.jpg',dir_name, files(i).name));
                 end
             end
         end

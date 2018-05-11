@@ -188,9 +188,9 @@ BEyes = [le_endx+betweenl/5 Forehead(2)+Forehead(4) (3/5)*betweenl 0.4*d];
 %I = insertShape(I,'rectangle',RightTemple, 'Color', 'red');
 
 %--------------------------------------------
-correction = gammacorrection(I, 1);
-I = imadjust(I,[],[], correction);
-I = edge(I,'Canny',[0 0.09]);
+%correction = gammacorrection(I, 1);
+%I = imadjust(I,[],[], correction);
+I = edge(I,'Canny',[0.03 0.05]);
 
 
 

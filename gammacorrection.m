@@ -31,8 +31,13 @@ if Err == 0
 x = Image;
 x = double(x);
 average_br = mean2(x)/255;
+% fprintf('AV BR ');
+% average_br
 %average_br
-gamma = -0.3/(log(average_br));
+gamma = -1/(log(average_br));
+% threshold_min = 0.01 * average_br;
+% threshold_max = 0.2 * average_br;
+% threshold = [threshold_min threshold_max]
 %gamma
 end;
 end

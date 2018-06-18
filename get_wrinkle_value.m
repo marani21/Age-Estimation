@@ -1,4 +1,4 @@
-function [Image, value, success] = get_wrinkle_value(file)
+function [Image, value, success] = get_wrinkle_value(file, threshold)
 value = 0;
 success = true;
 I = imread(file);
@@ -7,7 +7,7 @@ Image = I;
 if size(I,3)==3
     I = rgb2gray(I);
 end
-fprintf('START');
+%fprintf('START');
  
 %To detect Face
 FaceDetect = vision.CascadeObjectDetector('FrontalFaceLBP');
@@ -119,17 +119,17 @@ ch_x1 = LeftEye(1);
 ch_x2 = Nose(1) + Nose(3);
 ch_y1 = LeftEye(2) + LeftEye(4);
 ch_y2 = RightEye(2) + RightEye(4);
-ch_w1 = (Nose(1) - Eyes(1)) * 0.8;
+ch_w1 = (Nose(1) - Eyes(1));% * 0.8;
 ch_w2 = (RightEye(1) + RightEye(3)) - ch_x2;
-ch_h1 = (nc(2) - ch_y1)*0.8;
-ch_h2 = nc(2) - ch_y1;
+ch_h1 = (nc(2) - ch_y1)*1.2;  %0.8 na 1.2
+ch_h2 = nc(2) - ch_y2;
 
 %poprawki
-sr_w = 0.2 * ch_w2;
-ch_w2 = ch_w2 * 0.8;
-ch_h2 = ch_h2 * 0.8;
+%sr_w = 0.2 * ch_w2;
+%ch_w2 = ch_w2 * 0.8;
+ch_h2 = ch_h2 * 1.2;
 
-ch_x2 = ch_x2 + sr_w;
+%ch_x2 = ch_x2 + sr_w;
 
 
 LeftChick = [ch_x1 ch_y1 ch_w1 ch_h1];
@@ -140,8 +140,8 @@ RightChick = [ch_x2 ch_y2 ch_w2 ch_h2];
 
 x1 = LeftEye(1) - ch_w1/2;
 x2 = RightEye(1) + RightEye(3);
-y1 = LeftEye(2) + 1/2*LeftEye(4);
-y2 = RightEye(2) + 1/2*RightEye(4);
+y1 = LeftEye(2) + 1/3*LeftEye(4); %1/2 na 1/3
+y2 = RightEye(2) + 1/3*RightEye(4); %1/2 na 1/3
 h1 = (ch_y1 + 1/2*ch_h1) - y1;
 h2 = (ch_y2 + 1/2*ch_h2) - y2;
 w1 = 1/2 * ch_w1;
@@ -188,9 +188,49 @@ BEyes = [le_endx+betweenl/5 Forehead(2)+Forehead(4) (3/5)*betweenl 0.4*d];
 %I = insertShape(I,'rectangle',RightTemple, 'Color', 'red');
 
 %--------------------------------------------
-%correction = gammacorrection(I, 1);
-%I = imadjust(I,[],[], correction);
-I = edge(I,'Canny',[0.03 0.05]);
+%I = imgaussfilt(I, 1.2);
+
+
+correction = gammacorrection(I, 1);
+I = imadjust(I,[],[], correction);
+I = adapthisteq(I, 'clipLimit',0.000001,'Distribution','rayleigh');
+IF = imcrop(I, Forehead);
+x = IF;
+x = double(x);
+average_br = mean2(x)/255;
+average_br
+[counts,binLocations] = imhist(I);
+% figure
+% % imshow(I)
+% imhist(I)
+sum1 = 0;
+% c = average_br * 255;
+% center = round(c);
+% center = center - 40;
+% center
+
+
+% [M,ind] = max(counts);
+% center = ind;
+% center
+% il = center-10;
+% ih = center+10;
+% for i=il:ih
+%     sum1 = sum1 + counts(i);
+% end
+% th = sum1*2/(20*10000);
+% tl = th/2;
+% %I = imgaussfilt(I,1.5);
+% %0.0005
+% 
+% %h = ones(5,5)/25;
+% %I = imfilter(I,h);
+% tl 
+% th
+[~, treshOut]= edge(I, 'Canny');
+tt = treshOut*0.7;
+tt(1) = tt(1) * 1;
+I = edge(I,'Canny',tt);
 
 
 
@@ -233,7 +273,7 @@ value = sum(v);
 % plot(xnl, Forhead(2) + Forhead(4), 'ro', 'MarkerSize', 4);
 % 
 % rectangle('Position',BEyes,'EdgeColor','r');
-fprintf('END');
+%fprintf('END');
 Image = I;
 
 end

@@ -115,20 +115,23 @@ flc = [Forehead(1) + Forehead(3)/2 Forehead(2)+Forehead(4)];
 %----------------------------------------------%
 %Chicks
 
+
 ch_x1 = LeftEye(1);
 ch_x2 = Nose(1) + Nose(3);
 ch_y1 = LeftEye(2) + LeftEye(4);
 ch_y2 = RightEye(2) + RightEye(4);
-ch_w1 = (Nose(1) - Eyes(1))*0.8;
+ch_w1 = (Nose(1) - Eyes(1));% * 0.8;
 ch_w2 = (RightEye(1) + RightEye(3)) - ch_x2;
-ch_h1 = (nc(2) - ch_y1)*0.8;
-ch_h2 = nc(2) - ch_y1;
+ch_h1 = (nc(2) - ch_y1)*1.2;  %0.8 na 1.2
+ch_h2 = nc(2) - ch_y2;
 
-sr_w = 0.2 * ch_w2;
-ch_w2 = ch_w2 * 0.8;
-ch_h2 = ch_h2 * 0.8;
+%poprawki
+%sr_w = 0.2 * ch_w2;
+%ch_w2 = ch_w2 * 0.8;
+ch_h2 = ch_h2 * 1.2;
 
-ch_x2 = ch_x2 + sr_w;
+%ch_x2 = ch_x2 + sr_w;
+
 
 LeftChick = [ch_x1 ch_y1 ch_w1 ch_h1];
 RightChick = [ch_x2 ch_y2 ch_w2 ch_h2];
@@ -138,8 +141,8 @@ RightChick = [ch_x2 ch_y2 ch_w2 ch_h2];
 
 x1 = LeftEye(1) - ch_w1/2;
 x2 = RightEye(1) + RightEye(3);
-y1 = LeftEye(2) + 1/2*LeftEye(4);
-y2 = RightEye(2) + 1/2*RightEye(4);
+y1 = LeftEye(2) + 1/3*LeftEye(4); %1/2 na 1/3
+y2 = RightEye(2) + 1/3*RightEye(4); %1/2 na 1/3
 h1 = (ch_y1 + 1/2*ch_h1) - y1;
 h2 = (ch_y2 + 1/2*ch_h2) - y2;
 w1 = 1/2 * ch_w1;
@@ -147,6 +150,14 @@ w2 = 1/2 * ch_w2;
 
 LeftTemple = [x1 y1 w1 h1];
 RightTemple = [x2 y2 w2 h2];
+%----------------------------------------------%
+%Gamma correction
+%I = imgaussfilt(I, 1.2);
+correction = gammacorrection(I, 1);
+I = imadjust(I,[],[], correction);
+I = adapthisteq(I, 'clipLimit',0.000001,'Distribution','rayleigh');
+
+
 %----------------------------------------------%
 %Drawing
 %I = insertShape(I,'rectangle',Mouth, 'Color', 'blue');
@@ -230,7 +241,7 @@ I = insertShape(I,'rectangle',RightTemple, 'Color', 'red');
 % plot(xnl, Forhead(2) + Forhead(4), 'ro', 'MarkerSize', 4);
 % 
 % rectangle('Position',BEyes,'EdgeColor','r');
-fprintf('END');
+%fprintf('END');
 %correction = gammacorrection(I, 1);
 %I = imadjust(I,[],[], correction);
 Image = I;
